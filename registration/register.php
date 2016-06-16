@@ -2,15 +2,16 @@
 require_once ('RegistrationForm.php');
 require_once ('DB.php');
 require_once ('Password.php');
+require_once 'Session.php';
 
 $host = 'localhost';
-$user = 'root';
+$db_user = 'root';
 $password = '';
 $db_name = 'register';
 
 $msg = '';
 
-$db = new DB($host, $user, $password, $db_name);
+$db = new DB($host, $db_user, $password, $db_name);
 $form = new RegistrationForm($_POST);
 
 if ($_POST){
@@ -25,6 +26,14 @@ if ($_POST){
         } else {
             $db->query("INSERT INTO user (email, username, password) 
                         VALUES ('{$email}', '{$username}', '{$password}')");
+
+            $result = $db->query("
+                        SELECT * FROM user 
+                        WHERE username = '{$username}' 
+                        AND password = '{$password}' LIMIT 1");
+            $user = $result[0]['username'];
+            session_start();
+            Session::set('user', $user);
             header('Location: index.php?msg=You have been registered');
         }
     } else {
@@ -33,6 +42,8 @@ if ($_POST){
 }
 
 ?>
+
+<b><?=$msg;?></b>
 
 <form method="post">
     <label>Username:<br/>
@@ -48,4 +59,6 @@ if ($_POST){
         <input type="password" name="passwordConfirm">
     </label><br/>
     <input type="submit">
-</form> 
+</form><br/>
+
+<a href="login.php">Login</a>
