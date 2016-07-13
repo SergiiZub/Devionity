@@ -34,9 +34,7 @@ class Router
         $path = $uri_parts[0];
 
         $path_parts = explode('/', $path);
-
-//        echo "<pre>";
-//        print_r($path_parts);
+        
 
         if (in_array(strtolower(current($path_parts)), array_keys($routes))){
             $this->route = strtolower(current($path_parts));

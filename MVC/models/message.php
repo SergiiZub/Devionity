@@ -16,10 +16,7 @@ class Message extends Model
         if (!$id){
             //add new record
             $sql = "INSERT INTO messages (`name`, `email`, `message`) VALUES ('{$name}', '{$email}', '{$message}')";
-//                    set name = '{$name}',
-//                    email = '{$email}',
-//                    message = '{$message}'
-//              ";
+
         } else {
             //update existing record
             $sql = "UPDATE messages
